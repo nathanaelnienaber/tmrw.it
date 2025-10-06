@@ -7,39 +7,25 @@
   <link rel="icon" type="image/png" href="/favicon-dark.png">
   <meta name="description" content="tmrw.it — independent studio building digital things for tomorrow. Projects, apps, platforms and experiments from TMRW LLC.">
   <style>
-    :root {
-      --bg: #000;
-      --fg: #fff;
-      --muted: #888;
-    }
-
-    /* ✅ Reset to ensure fixed elements attach to the viewport */
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
-
     body {
-      font-family: 'Space Mono', monospace;
-      background: var(--bg);
-      color: var(--fg);
-      line-height: 1.6;
+      font-family: monospace;
+      background: #000;
+      color: #fff;
       max-width: 700px;
-      margin: 40px auto;
+      margin: 60px auto;
+      line-height: 1.6;
       padding: 0 20px;
-      position: relative;
     }
 
     a {
-      color: var(--fg);
+      color: #fff;
       text-decoration: underline;
     }
 
     h1 {
+      text-transform: lowercase;
       font-size: 2.5rem;
       margin-bottom: 0.5em;
-      text-transform: lowercase;
     }
 
     h2 {
@@ -50,65 +36,22 @@
     }
 
     hr {
-      margin: 2em 0;
       border: none;
-      border-top: 1px solid var(--fg);
-    }
-
-    section {
-      margin-bottom: 2em;
+      border-top: 1px solid #fff;
+      margin: 2em 0;
     }
 
     footer {
       margin-top: 3em;
+      color: #888;
       font-size: 0.9rem;
-      color: var(--muted);
     }
-
-    /* ✅ Always-visible language toggle button */
-    .lang-toggle {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      z-index: 2147483647;
-      background: rgba(0, 0, 0, 0.85);
-      border: 1px solid #fff;
-      color: #fff;
-      padding: 8px 12px;
-      font-family: inherit;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      cursor: pointer;
-      line-height: 1;
-      opacity: 0.9;
-      transition: opacity 0.2s ease, background 0.2s ease;
-      box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
-    }
-
-    .lang-toggle:hover {
-      opacity: 1;
-      background: #fff;
-      color: #000;
-    }
-
-    /* Hide all languages except English by default */
-    [class^="lang-"] { display: none; }
-    .lang-en { display: block; }
   </style>
 </head>
 <body>
 
-  <!-- ✅ Language toggle button (now always visible) -->
-  <button class="lang-toggle" onclick="toggleLang()">EN</button>
-
   <h1>tmrw.it</h1>
-
-  <!-- Intro -->
-  <p class="lang-en">independent studio building digital things for tomorrow</p>
-  <p class="lang-de">unabhängiges studio, das digitale dinge für morgen baut</p>
-  <p class="lang-es">estudio independiente que construye cosas digitales para el mañana</p>
-  <p class="lang-da">uafhængigt studie, der bygger digitale ting til i morgen</p>
-  <p class="lang-sv">oberoende studio som bygger digitala saker för morgondagen</p>
+  <p>independent studio building digital things for tomorrow.</p>
 
   <hr>
 
@@ -125,11 +68,7 @@
 
   <section>
     <h2>about</h2>
-    <p class="lang-en">I build apps, tools, platforms and experiments — from ad-supported mobile projects to larger consumer apps.</p>
-    <p class="lang-de">Ich entwickle Apps, Tools, Plattformen und Experimente – von werbegestützten mobilen Projekten bis hin zu größeren Verbraucher-Apps.</p>
-    <p class="lang-es">Construyo aplicaciones, herramientas, plataformas y experimentos — desde proyectos móviles con publicidad hasta aplicaciones de consumo más grandes.</p>
-    <p class="lang-da">Jeg bygger apps, værktøjer, platforme og eksperimenter — fra annonceunderstøttede mobile projekter til større forbrugerapps.</p>
-    <p class="lang-sv">Jag bygger appar, verktyg, plattformar och experiment — från annonsstödda mobilprojekt till större konsumentappar.</p>
+    <p>I build apps, tools, platforms and experiments — from ad-supported mobile projects to larger consumer apps.</p>
   </section>
 
   <section>
@@ -140,21 +79,6 @@
   <footer>
     © TMRW LLC — 2025
   </footer>
-
-  <script>
-    const langs = ['en', 'de', 'es', 'da', 'sv'];
-    let index = 0;
-
-    function toggleLang() {
-      const current = langs[index];
-      const next = langs[(index + 1) % langs.length];
-      document.querySelectorAll('[class^="lang-"]').forEach(el => el.style.display = 'none');
-      document.querySelectorAll(`.lang-${next}`).forEach(el => el.style.display = 'block');
-      document.querySelector('.lang-toggle').textContent = next.toUpperCase();
-      document.documentElement.lang = next; // updates <html lang=""> for accessibility/SEO
-      index = (index + 1) % langs.length;
-    }
-  </script>
 
 </body>
 </html>
