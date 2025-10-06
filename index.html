@@ -20,6 +20,7 @@
       margin: 40px auto;
       max-width: 700px;
       line-height: 1.6;
+      position: relative;
     }
 
     a {
@@ -60,13 +61,21 @@
       position: fixed;
       top: 20px;
       right: 20px;
-      background: none;
+      z-index: 999;
+      background: var(--bg);
       border: 1px solid var(--fg);
       color: var(--fg);
-      padding: 4px 8px;
+      padding: 6px 10px;
       font-family: inherit;
       font-size: 0.8rem;
       cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+    }
+
+    .lang-toggle:hover {
+      background: var(--fg);
+      color: var(--bg);
     }
 
     /* Hide all languages except English by default */
@@ -76,6 +85,7 @@
 </head>
 <body>
 
+  <!-- Language toggle button -->
   <button class="lang-toggle" onclick="toggleLang()">EN</button>
 
   <h1>tmrw.it</h1>
@@ -128,6 +138,7 @@
       document.querySelectorAll(`[class^="lang-"]`).forEach(el => el.style.display = 'none');
       document.querySelectorAll(`.lang-${next}`).forEach(el => el.style.display = 'block');
       document.querySelector('.lang-toggle').textContent = next.toUpperCase();
+      document.documentElement.lang = next; // updates <html lang=""> for accessibility/SEO
       index = (index + 1) % langs.length;
     }
   </script>
