@@ -58,25 +58,28 @@
     }
 
     .lang-toggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 999;
-      background: var(--bg);
-      border: 1px solid var(--fg);
-      color: var(--fg);
-      padding: 6px 10px;
-      font-family: inherit;
-      font-size: 0.8rem;
-      cursor: pointer;
-      text-transform: uppercase;
-      transition: all 0.2s ease;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 2147483647; /* absolute top of the stack */
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    line-height: 1;
+    opacity: 0.9;
+    transition: opacity 0.2s ease, background 0.2s ease;
+    }
+    .lang-toggle:hover {
+    opacity: 1;
+    background: #fff;
+    color: #000;
     }
 
-    .lang-toggle:hover {
-      background: var(--fg);
-      color: var(--bg);
-    }
 
     /* Hide all languages except English by default */
     [class^="lang-"] { display: none; }
