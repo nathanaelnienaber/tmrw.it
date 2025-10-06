@@ -13,13 +13,21 @@
       --muted: #888;
     }
 
+    /* ✅ Reset to ensure fixed elements attach to the viewport */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
     body {
       font-family: 'Space Mono', monospace;
       background: var(--bg);
       color: var(--fg);
-      margin: 40px auto;
-      max-width: 700px;
       line-height: 1.6;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 0 20px;
       position: relative;
     }
 
@@ -57,29 +65,31 @@
       color: var(--muted);
     }
 
+    /* ✅ Always-visible language toggle button */
     .lang-toggle {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    z-index: 2147483647; /* absolute top of the stack */
-    background: rgba(0, 0, 0, 0.85);
-    border: 1px solid #fff;
-    color: #fff;
-    padding: 8px 12px;
-    font-family: inherit;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    cursor: pointer;
-    line-height: 1;
-    opacity: 0.9;
-    transition: opacity 0.2s ease, background 0.2s ease;
-    }
-    .lang-toggle:hover {
-    opacity: 1;
-    background: #fff;
-    color: #000;
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 2147483647;
+      background: rgba(0, 0, 0, 0.85);
+      border: 1px solid #fff;
+      color: #fff;
+      padding: 8px 12px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      cursor: pointer;
+      line-height: 1;
+      opacity: 0.9;
+      transition: opacity 0.2s ease, background 0.2s ease;
+      box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
     }
 
+    .lang-toggle:hover {
+      opacity: 1;
+      background: #fff;
+      color: #000;
+    }
 
     /* Hide all languages except English by default */
     [class^="lang-"] { display: none; }
@@ -88,7 +98,7 @@
 </head>
 <body>
 
-  <!-- Language toggle button -->
+  <!-- ✅ Language toggle button (now always visible) -->
   <button class="lang-toggle" onclick="toggleLang()">EN</button>
 
   <h1>tmrw.it</h1>
@@ -132,13 +142,13 @@
   </footer>
 
   <script>
-    const langs = ['en','de','es','da','sv'];
+    const langs = ['en', 'de', 'es', 'da', 'sv'];
     let index = 0;
 
     function toggleLang() {
       const current = langs[index];
       const next = langs[(index + 1) % langs.length];
-      document.querySelectorAll(`[class^="lang-"]`).forEach(el => el.style.display = 'none');
+      document.querySelectorAll('[class^="lang-"]').forEach(el => el.style.display = 'none');
       document.querySelectorAll(`.lang-${next}`).forEach(el => el.style.display = 'block');
       document.querySelector('.lang-toggle').textContent = next.toUpperCase();
       document.documentElement.lang = next; // updates <html lang=""> for accessibility/SEO
@@ -148,3 +158,4 @@
 
 </body>
 </html>
+
