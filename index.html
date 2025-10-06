@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>tmrw.it</title>
+  <meta name="description" content="tmrw.it — independent studio building digital things for tomorrow. Projects, apps, and experiments from tmrw.it LLC.">
+  <style>
+    :root {
+      --bg: #000;
+      --fg: #fff;
+      --muted: #888;
+    }
+
+    body {
+      font-family: 'Space Mono', monospace;
+      background: var(--bg);
+      color: var(--fg);
+      margin: 40px auto;
+      max-width: 700px;
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--fg);
+      text-decoration: underline;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5em;
+      text-transform: lowercase;
+    }
+
+    h2 {
+      text-transform: lowercase;
+      font-size: 1rem;
+      margin-top: 2em;
+      margin-bottom: 0.5em;
+    }
+
+    hr {
+      margin: 2em 0;
+      border: none;
+      border-top: 1px solid var(--fg);
+    }
+
+    section {
+      margin-bottom: 2em;
+    }
+
+    footer {
+      margin-top: 3em;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .lang-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: 1px solid var(--fg);
+      color: var(--fg);
+      padding: 4px 8px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .lang-it { display: none; }
+  </style>
+</head>
+<body>
+
+  <button class="lang-toggle" onclick="toggleLang()">IT / EN</button>
+
+  <h1>tmrw.it</h1>
+
+  <p class="lang-en">independent studio building digital things for tomorrow</p>
+  <p class="lang-it">studio indipendente che costruisce esperienze digitali per il domani</p>
+
+  <hr>
+
+  <section>
+    <h2>projects</h2>
+    <p><a href="#">appname1</a> – small mobile tool (ad-based)</p>
+    <p><a href="#">appname2</a> – social app (in development)</p>
+    <p><a href="#">appname3</a> – experiment (web)</p>
+  </section>
+
+  <section>
+    <h2>about</h2>
+    <p class="lang-en">
+      tmrw.it LLC is the studio behind <a href="https://n2n.work">n2n.work</a>.
+      I build apps, tools, and experiments — from ad-supported mobile projects
+      to larger consumer apps.
+    </p>
+    <p class="lang-it">
+      tmrw.it LLC è lo studio dietro <a href="https://n2n.work">n2n.work</a>.
+      Creo app, strumenti ed esperimenti — dai progetti mobili supportati da annunci
+      alle applicazioni consumer su larga scala.
+    </p>
+  </section>
+
+  <section>
+    <h2>contact</h2>
+    <p><a href="mailto:hello@tmrw.it">hello@tmrw.it</a></p>
+  </section>
+
+  <footer>
+    © tmrw.it LLC — 2025
+  </footer>
+
+  <script>
+    function toggleLang() {
+      const en = document.querySelectorAll('.lang-en');
+      const it = document.querySelectorAll('.lang-it');
+      en.forEach(el => el.style.display = (el.style.display === 'none') ? 'block' : 'none');
+      it.forEach(el => el.style.display = (el.style.display === 'block') ? 'none' : 'block');
+    }
+  </script>
+
+</body>
+</html>
