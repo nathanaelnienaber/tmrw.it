@@ -69,41 +69,44 @@
       cursor: pointer;
     }
 
-    .lang-it { display: none; }
+    /* Hide all languages except English by default */
+    [class^="lang-"] { display: none; }
+    .lang-en { display: block; }
   </style>
 </head>
 <body>
 
-  <button class="lang-toggle" onclick="toggleLang()">IT / EN</button>
+  <button class="lang-toggle" onclick="toggleLang()">EN</button>
 
   <h1>tmrw.it</h1>
 
+  <!-- Intro -->
   <p class="lang-en">independent studio building digital things for tomorrow</p>
-  <p class="lang-it">studio indipendente che costruisce esperienze digitali per il domani</p>
+  <p class="lang-de">unabhängiges studio, das digitale dinge für morgen baut</p>
+  <p class="lang-es">estudio independiente que construye cosas digitales para el mañana</p>
+  <p class="lang-da">uafhængigt studie, der bygger digitale ting til i morgen</p>
+  <p class="lang-sv">oberoende studio som bygger digitala saker för morgondagen</p>
 
   <hr>
-<section>
-  <h2>Projects</h2>
-  <p><a href="https://timestalesgo.com" target="_blank">Times Tales Go!</a> – mobile app (ad-based)</p>
-  <p><a href="https://clapback.app" target="_blank">clapback</a> – social app (in development)</p>
-  <p><a href="https://simpletherapy.app" target="_blank">simple therapy</a> – social app (in development)</p>
-  <p><a href="https://www.npmjs.com/package/tmrw-audit" target="_blank">tmrw-audit</a> – infrastructure security (CLI)</p>
-  <p><a href="https://n2n.work" target="_blank">n2n.work</a> – for hire (consulting)</p>
-  <p><a href="https://fathomwater.com" target="_blank">fathom</a> – corporate website (web)</p>
-  <p><a href="https://www.attuned-counseling.com" target="_blank">attuned counceling</a> – therapist website (web)</p>
-</section>
 
+  <section>
+    <h2>projects</h2>
+    <p><a href="https://timestalesgo.com" target="_blank">Times Tales Go!</a> – mobile app (ad-based)</p>
+    <p><a href="https://clapback.app" target="_blank">clapback</a> – social app (in development)</p>
+    <p><a href="https://simpletherapy.app" target="_blank">simple therapy</a> – social app (in development)</p>
+    <p><a href="https://www.npmjs.com/package/tmrw-audit" target="_blank">tmrw-audit</a> – infrastructure security (CLI)</p>
+    <p><a href="https://n2n.work" target="_blank">n2n.work</a> – for hire (consulting)</p>
+    <p><a href="https://fathomwater.com" target="_blank">fathom</a> – corporate website (web)</p>
+    <p><a href="https://www.attuned-counseling.com" target="_blank">attuned counseling</a> – therapist website (web)</p>
+  </section>
 
   <section>
     <h2>about</h2>
-    <p class="lang-en">
-      I build apps, tools, platforms and experiments — from ad-supported mobile projects
-      to larger consumer apps.
-    </p>
-    <p class="lang-it">
-      Creo app, strumenti ed esperimenti — dai progetti mobili supportati da annunci
-      alle applicazioni consumer su larga scala.
-    </p>
+    <p class="lang-en">I build apps, tools, platforms and experiments — from ad-supported mobile projects to larger consumer apps.</p>
+    <p class="lang-de">Ich entwickle Apps, Tools, Plattformen und Experimente – von werbegestützten mobilen Projekten bis hin zu größeren Verbraucher-Apps.</p>
+    <p class="lang-es">Construyo aplicaciones, herramientas, plataformas y experimentos — desde proyectos móviles con publicidad hasta aplicaciones de consumo más grandes.</p>
+    <p class="lang-da">Jeg bygger apps, værktøjer, platforme og eksperimenter — fra annonceunderstøttede mobile projekter til større forbrugerapps.</p>
+    <p class="lang-sv">Jag bygger appar, verktyg, plattformar och experiment — från annonsstödda mobilprojekt till större konsumentappar.</p>
   </section>
 
   <section>
@@ -116,11 +119,16 @@
   </footer>
 
   <script>
+    const langs = ['en','de','es','da','sv'];
+    let index = 0;
+
     function toggleLang() {
-      const en = document.querySelectorAll('.lang-en');
-      const it = document.querySelectorAll('.lang-it');
-      en.forEach(el => el.style.display = (el.style.display === 'none') ? 'block' : 'none');
-      it.forEach(el => el.style.display = (el.style.display === 'block') ? 'none' : 'block');
+      const current = langs[index];
+      const next = langs[(index + 1) % langs.length];
+      document.querySelectorAll(`[class^="lang-"]`).forEach(el => el.style.display = 'none');
+      document.querySelectorAll(`.lang-${next}`).forEach(el => el.style.display = 'block');
+      document.querySelector('.lang-toggle').textContent = next.toUpperCase();
+      index = (index + 1) % langs.length;
     }
   </script>
 
