@@ -44,8 +44,8 @@ export const metadata: Metadata = {
     canonical: "https://tmrw.it",
   },
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
   },
   other: {
     "built-with": "Next.js + ChatGPT + tmrw",
