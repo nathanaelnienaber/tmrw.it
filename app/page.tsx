@@ -7,23 +7,35 @@ import { PhilosophySection } from "../components/PhilosophySection";
 import { SectionSkeleton } from "../components/SectionSkeleton";
 
 const OfferingsSection = dynamic(
-  () => import("../components/OfferingsSection").then((mod) => mod.OfferingsSection),
+  () =>
+    import("../components/OfferingsSection").then((mod) => ({
+      default: mod.OfferingsSection,
+    })),
   {
     loading: () => <SectionSkeleton title="Offerings" />,
+    ssr: false,
   }
 );
 
 const ProofSection = dynamic(
-  () => import("../components/ProofSection").then((mod) => mod.ProofSection),
+  () =>
+    import("../components/ProofSection").then((mod) => ({
+      default: mod.ProofSection,
+    })),
   {
     loading: () => <SectionSkeleton title="Proof" />,
+    ssr: false,
   }
 );
 
 const ProcessSection = dynamic(
-  () => import("../components/ProcessSection").then((mod) => mod.ProcessSection),
+  () =>
+    import("../components/ProcessSection").then((mod) => ({
+      default: mod.ProcessSection,
+    })),
   {
     loading: () => <SectionSkeleton title="Process" />,
+    ssr: false,
   }
 );
 
