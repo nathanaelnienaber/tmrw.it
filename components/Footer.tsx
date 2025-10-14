@@ -1,7 +1,9 @@
+import Link from "next/link";
+
 const currentYear = new Date().getFullYear();
 
 const footerLinks = [
-  { label: "studio.tmrw.it", href: "https://studio.tmrw.it" },
+  { label: "studio.tmrw.it", href: "/studio" },
 ];
 
 export function Footer() {
@@ -16,15 +18,9 @@ export function Footer() {
         </div>
         <nav className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-widest text-offwhite/60" aria-label="Footer links">
           {footerLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="transition hover:text-offwhite/80"
-            >
+            <Link key={link.href} href={link.href} className="transition hover:text-offwhite/80">
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
         <div className="flex flex-col items-start gap-1 text-xs uppercase tracking-widest text-offwhite/50 md:items-end">
