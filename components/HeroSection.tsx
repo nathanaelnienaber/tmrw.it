@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+import { HeroAnimation } from "./HeroAnimation";
 import { trackEvent } from "../lib/analytics";
 
 const heroVariants = {
@@ -56,21 +56,11 @@ export function HeroSection() {
             initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.92 }}
             animate={shouldReduceMotion ? false : { opacity: 1, scale: 1 }}
             transition={shouldReduceMotion ? undefined : { delay: 0.3, duration: 0.9, ease: "easeOut" }}
-            className="relative w-full max-w-xl rounded-xl border border-electricBlue/20 bg-gradient-to-br from-graphite to-electricBlue/10 p-6"
+            className="w-full"
             aria-hidden="true"
             style={{ willChange: shouldReduceMotion ? undefined : "transform" }}
           >
-            <div className="relative aspect-square w-full overflow-hidden rounded-lg">
-              <Image
-                src="/hero-visual.svg"
-                alt="Abstract hero visualization showing orchestrated AI systems"
-                fill
-                priority
-                sizes="(max-width: 768px) 80vw, (max-width: 1200px) 40vw, 480px"
-                className="object-cover"
-              />
-            </div>
-            <div className="absolute inset-0 -z-10 rounded-xl bg-electricBlue/10 blur-3xl" />
+            <HeroAnimation />
           </motion.div>
         </div>
       </div>
