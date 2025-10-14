@@ -4,7 +4,6 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { ReactNode } from "react";
 import { LoadingOverlay } from "../components/LoadingOverlay";
-import { HighContrastToggle } from "../components/HighContrastToggle";
 import { BackToTopButton } from "../components/BackToTopButton";
 import { TelemetryObserver } from "../components/TelemetryObserver";
 
@@ -66,9 +65,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </a>
         <TelemetryObserver />
         <LoadingOverlay />
-        <div className="fixed right-4 top-4 z-50 flex flex-col items-end gap-3">
-          <HighContrastToggle />
-        </div>
         {children}
         <BackToTopButton />
         <Script
