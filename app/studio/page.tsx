@@ -26,10 +26,10 @@ export default function StudioPage() {
           <div className="md:col-span-7 lg:col-span-6 space-y-6">
             <p className="text-sm uppercase tracking-[0.4em] text-electricBlue/80">studio.tmrw.it</p>
             <h1 id="studio-heading" className="text-4xl font-semibold leading-tight sm:text-5xl lg:text-6xl">
-              Studio TMRW
+              TMRW's R&D Studio
             </h1>
             <p className="max-w-2xl text-lg text-offwhite/70 sm:text-xl">
-              Independent studio building digital products for tomorrow with precision, clarity and calm confidence.
+              Internal independent R&D studio building digital products for tomorrow with precision, clarity and calm confidence.
             </p>
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <a
@@ -42,16 +42,6 @@ export default function StudioPage() {
               </a>
               <span className="text-sm text-offwhite/60">Explore the full studio site.</span>
             </div>
-          </div>
-          <div className="md:col-span-5 lg:col-span-6 rounded-3xl border border-offwhite/10 bg-electricBlue/5 p-10">
-            <p className="text-sm uppercase tracking-widest text-electricBlue/70">What we do</p>
-            <p className="mt-4 text-lg leading-relaxed text-offwhite/80">
-              We craft apps, tools, platforms and experiments that balance delightful consumer experiences with resilient, secure
-              infrastructure. From ad-supported mobile products to long-term product partnerships, we bring systems thinking,
-              technical warmth and product craft to every engagement.
-            </p>
-          </div>
-        </div>
       </section>
 
       <section className="section-padding" aria-labelledby="projects-heading">
