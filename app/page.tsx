@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { ContextSection } from "../components/ContextSection";
 import { ContactCTA } from "../components/ContactCTA";
 import { Footer } from "../components/Footer";
@@ -12,12 +9,7 @@ import { ProofSection } from "../components/ProofSection";
 
 export default function Home() {
   return (
-    <motion.main
-      className="flex min-h-screen flex-col gap-4 scroll-smooth"
-      initial="hidden"
-      animate="visible"
-      variants={{ hidden: { opacity: 0.9 }, visible: { opacity: 1 } }}
-    >
+    <main className="flex min-h-screen flex-col gap-4">
       <HeroSection />
       <ContextSection />
       <OfferingsSection />
@@ -26,6 +18,6 @@ export default function Home() {
       <PhilosophySection />
       <ContactCTA />
       <Footer />
-    </motion.main>
+    </main>
   );
 }

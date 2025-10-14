@@ -27,24 +27,18 @@ const offerings = [
 
 export function OfferingsSection() {
   return (
-    <motion.section
-      className="section-padding py-24"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      viewport={{ once: true, amount: 0.2 }}
-    >
+    <section className="section-padding py-24">
       <div className="flex flex-col gap-12">
         <div className="grid-layout items-end">
           <motion.div
             className="md:col-span-6 space-y-4"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-semibold sm:text-4xl">Offerings</h2>
-            <p className="max-w-xl text-lg text-offwhite/70">
+            <h2 className="text-3xl sm:text-4xl font-semibold">Offerings</h2>
+            <p className="text-offwhite/70 text-lg max-w-xl">
               Bring us in across the lifecycle or drop into the stage that needs momentum. Each engagement moves with measurable deliverables.
             </p>
           </motion.div>
@@ -53,14 +47,11 @@ export function OfferingsSection() {
           {offerings.map((offering, index) => (
             <motion.article
               key={offering.title}
-              className="h-full rounded-2xl border border-offwhite/10 bg-graphite/60 p-8"
-              initial={{ opacity: 0, y: 28 }}
+              className="card-hover h-full rounded-2xl border border-offwhite/10 bg-graphite/60 p-8"
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.12 }}
-              whileHover={{ scale: 1.03, boxShadow: "0 0 24px rgba(74,178,247,0.28)" }}
-              whileTap={{ scale: 0.98 }}
-              style={{ willChange: "transform" }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
             >
               <div className="flex items-center justify-between">
                 <h3 className="text-2xl font-semibold text-offwhite">{offering.title}</h3>
@@ -73,6 +64,6 @@ export function OfferingsSection() {
           ))}
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
