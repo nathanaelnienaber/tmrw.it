@@ -60,7 +60,13 @@ export default function OpengraphImage() {
             marginTop: 48,
           }}
         >
-          <div style={{ maxWidth: 520 }}>
+          <div
+            style={{
+              maxWidth: 520,
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             <h1
               style={{
                 fontSize: 88,
@@ -103,6 +109,7 @@ export default function OpengraphImage() {
                 borderRadius: "50%",
                 border: "2px solid rgba(235, 169, 74, 0.6)",
                 position: "relative",
+                display: "flex",
               }}
             >
               <div
