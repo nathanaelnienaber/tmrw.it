@@ -34,24 +34,26 @@ export function HeroAnimation() {
       vy: 0,
     }));
 
-    let animationFrameId: number;
+    let animationFrameId: number | null = null;
     let width = 0;
     let height = 0;
-    const maxVelocity = 0.15;
-    const connectionDistance = 110;
+    const maxVelocity = 0.18;
+    const connectionDistance = 120;
 
     const initParticles = () => {
       const dpr = window.devicePixelRatio || 1;
       width = canvas.offsetWidth;
       height = canvas.offsetHeight;
+
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       context.setTransform(1, 0, 0, 1, 0, 0);
       context.scale(dpr, dpr);
+
       context.fillStyle = BACKGROUND_COLOR;
       context.fillRect(0, 0, width, height);
 
-      for (let particle of particles) {
+      for (const particle of particles) {
         particle.x = Math.random() * width;
         particle.y = Math.random() * height;
         particle.vx = (Math.random() - 0.5) * maxVelocity;
@@ -63,8 +65,6 @@ export function HeroAnimation() {
       context.fillStyle = BACKGROUND_COLOR;
       context.fillRect(0, 0, width, height);
 
-      context.shadowBlur = 0;
-      context.globalAlpha = 1;
       for (const particle of particles) {
         particle.x += particle.vx;
         particle.y += particle.vy;
@@ -79,8 +79,8 @@ export function HeroAnimation() {
         }
 
         context.beginPath();
-        context.shadowColor = "rgba(74, 178, 247, 0.45)";
-        context.shadowBlur = 12;
+        context.shadowColor = "rgba(74, 178, 247, 0.4)";
+        context.shadowBlur = 10;
         context.arc(particle.x, particle.y, 2.1, 0, Math.PI * 2);
         context.fillStyle = PARTICLE_COLOR;
         context.globalAlpha = 0.85;
@@ -112,7 +112,6 @@ export function HeroAnimation() {
       }
 
       context.globalAlpha = 1;
-
       animationFrameId = window.requestAnimationFrame(draw);
     };
 
@@ -120,7 +119,6 @@ export function HeroAnimation() {
     draw();
 
     const handleResize = () => {
-      context.setTransform(1, 0, 0, 1, 0, 0);
       initParticles();
     };
 
@@ -128,12 +126,16 @@ export function HeroAnimation() {
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      window.cancelAnimationFrame(animationFrameId);
+      if (animationFrameId !== null) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
     };
   }, []);
 
   return (
-    <div className="relative isolate flex aspect-square w-full max-w-xl items-center justify-center overflow-hidden rounded-2xl border border-electricBlue/20 bg-[#0E0E0E] p-6 shadow-[0_40px_120px_-60px_rgba(74,178,247,0.45)]">
+    <div
+      className="relative isolate flex aspect-square w-full max-w-xl items-center justify-center overflow-hidden rounded-2xl border border-electricBlue/20 bg-[#0E0E0E] p-6 shadow-[0_40px_120px_-60px_rgba(74,178,247,0.45)]"
+    >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(74,178,247,0.25),_transparent_60%)]" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-electricBlue/10 via-transparent to-transparent" />
       <canvas ref={canvasRef} className="relative h-full w-full rounded-[1.5rem]" aria-hidden="true" />
