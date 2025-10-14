@@ -13,29 +13,29 @@ const heroVariants = {
 
 export function HeroSection() {
   return (
-    <section className="section-padding min-h-screen flex items-center">
-      <div className="grid-layout">
+    <section className="section-padding flex min-h-screen flex-col justify-center py-16 sm:py-20">
+      <div className="grid-layout items-center gap-12">
         <motion.div
-          className="md:col-span-7 lg:col-span-6 space-y-6"
+          className="md:col-span-7 lg:col-span-6 space-y-6 text-center md:text-left md:space-y-8"
           initial="hidden"
           animate="visible"
           variants={heroVariants}
         >
           <p className="text-sm uppercase tracking-[0.4em] text-electricBlue/80">tmrw</p>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-tight">
+          <h1 className="mx-auto max-w-2xl text-4xl sm:text-5xl lg:text-6xl font-semibold leading-tight">
             Practical AI for real work.
           </h1>
-          <p className="text-lg sm:text-xl text-offwhite/80 max-w-2xl">
+          <p className="mx-auto max-w-2xl text-base text-offwhite/80 sm:text-lg lg:text-xl">
             We help teams design, build, and deploy AI agents — trained on your data, connected through MCP, and integrated with your systems.
           </p>
-          <div className="flex flex-wrap items-center gap-4 pt-4">
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-4 md:justify-start">
             <a
               href="#contact"
               className="inline-flex items-center justify-center rounded-full border border-electricBlue/60 bg-electricBlue/10 px-6 py-3 text-sm font-medium text-offwhite transition hover:bg-electricBlue/20"
             >
               Book a strategy session
             </a>
-            <span className="text-sm text-offwhite/60">
+            <span className="max-w-xs text-sm text-offwhite/60">
               Trusted by operators building the next wave of intelligent tooling.
             </span>
           </div>

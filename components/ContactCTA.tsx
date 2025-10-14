@@ -4,19 +4,19 @@ import { motion } from "framer-motion";
 
 export function ContactCTA() {
   return (
-    <section id="contact" className="section-padding py-32">
+    <section id="contact" className="section-padding py-24 sm:py-32">
       <motion.div
-        className="rounded-3xl border border-electricBlue/20 bg-electricBlue/5 p-10 shadow-glow"
+        className="rounded-3xl border border-electricBlue/20 bg-electricBlue/5 p-8 shadow-glow sm:p-10"
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         viewport={{ once: true }}
       >
         <div className="grid gap-10 md:grid-cols-2 md:items-center">
-          <div className="space-y-4">
+          <div className="space-y-4 text-center md:text-left">
             <p className="text-sm uppercase tracking-[0.3em] text-electricBlue/80">Contact</p>
-            <h2 className="text-3xl font-semibold">Start with a 30-minute strategy session.</h2>
-            <p className="text-offwhite/70 text-lg">
+            <h2 className="text-2xl font-semibold sm:text-3xl">Start with a 30-minute strategy session.</h2>
+            <p className="text-base text-offwhite/70 sm:text-lg">
               Share a challenge you&apos;re exploring and we&apos;ll respond with a tailored agenda for your team.
             </p>
           </div>
