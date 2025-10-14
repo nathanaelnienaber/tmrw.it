@@ -30,9 +30,9 @@ export function ProcessSection() {
   const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
-    <section ref={sectionRef} className="section-padding py-32">
-      <div className="grid-layout items-start">
-        <div className="md:col-span-5 space-y-4">
+    <section ref={sectionRef} className="section-padding py-24 sm:py-32">
+      <div className="grid-layout items-start gap-12">
+        <div className="space-y-4 md:col-span-5">
           <motion.p
             className="text-sm uppercase tracking-[0.3em] text-amber/80"
             initial={{ opacity: 0, y: 12 }}
@@ -62,12 +62,12 @@ export function ProcessSection() {
           </motion.p>
         </div>
         <div className="md:col-span-7">
-          <div className="relative border-l border-offwhite/10 pl-8">
+          <div className="relative rounded-2xl border border-offwhite/10 p-6 md:border-none md:p-0 md:pl-8 md:pt-2">
             <motion.span
               style={{ height: progressHeight }}
-              className="absolute left-[-1px] top-0 w-[2px] origin-top bg-gradient-to-b from-electricBlue via-electricBlue/60 to-amber"
+              className="absolute left-[-1px] top-0 hidden w-[2px] origin-top bg-gradient-to-b from-electricBlue via-electricBlue/60 to-amber md:block"
             />
-            <div className="space-y-16">
+            <div className="space-y-12 md:space-y-16">
               {steps.map((step, index) => (
                 <motion.div
                   key={step.name}
@@ -77,11 +77,13 @@ export function ProcessSection() {
                   transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
                   viewport={{ once: false, amount: 0.6 }}
                 >
-                  <span className="absolute -left-8 flex h-6 w-6 items-center justify-center rounded-full border border-electricBlue/50 bg-graphite text-xs font-semibold text-electricBlue">
+                  <span className="mb-3 inline-flex h-8 w-8 items-center justify-center rounded-full border border-electricBlue/50 bg-graphite text-sm font-semibold text-electricBlue md:absolute md:-left-8 md:mb-0 md:h-6 md:w-6 md:text-xs">
                     {index + 1}
                   </span>
-                  <h3 className="text-2xl font-semibold">{step.name}</h3>
-                  <p className="mt-3 text-offwhite/70 leading-relaxed">{step.description}</p>
+                  <h3 className="text-xl font-semibold md:text-2xl">{step.name}</h3>
+                  <p className="mt-2 text-base text-offwhite/70 leading-relaxed md:mt-3">
+                    {step.description}
+                  </p>
                 </motion.div>
               ))}
             </div>
