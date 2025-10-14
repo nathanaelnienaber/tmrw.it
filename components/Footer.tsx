@@ -1,5 +1,9 @@
 const currentYear = new Date().getFullYear();
 
+const footerLinks = [
+  { label: "studio.tmrw.it", href: "https://studio.tmrw.it" },
+];
+
 export function Footer() {
   return (
     <footer className="section-padding py-12" aria-label="Site footer">
@@ -10,6 +14,19 @@ export function Footer() {
           </span>
           <p className="text-offwhite/80">tmrw — Practical AI for real work.</p>
         </div>
+        <nav className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-widest text-offwhite/60" aria-label="Footer links">
+          {footerLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="transition hover:text-offwhite/80"
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
         <div className="flex flex-col items-start gap-1 text-xs uppercase tracking-widest text-offwhite/50 md:items-end">
           <span>© {currentYear} tmrw systems. All rights reserved.</span>
           <span>Built with Next.js + ChatGPT + tmrw</span>
