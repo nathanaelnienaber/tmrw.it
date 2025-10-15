@@ -1,7 +1,22 @@
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
-const CONTACT_EMAIL = "hello@tmrw.it";
-const RESEND_ENDPOINT = "https://api.resend.com/emails";
+const DEFAULT_CONTACT_RECIPIENT = "hello@tmrw.it";
+const DEFAULT_FROM_ADDRESS = `TMRW Studio <${DEFAULT_CONTACT_RECIPIENT}>`;
+
+function parseRecipientList(value: string | undefined) {
+  return (value ?? "")
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter((entry) => entry.length > 0);
+}
+
+const contactRecipients = parseRecipientList(
+  process.env.CONTACT_EMAIL_RECIPIENTS ??
+    process.env.CONTACT_RECIPIENTS ??
+    process.env.CONTACT_EMAIL ??
+    DEFAULT_CONTACT_RECIPIENT,
+);
 
 const HTML_ESCAPE_LOOKUP: Record<string, string> = {
   "&": "&amp;",
@@ -11,12 +26,9 @@ const HTML_ESCAPE_LOOKUP: Record<string, string> = {
   "'": "&#39;",
 };
 
-function assertEnv(name: string, value: string | undefined): string {
-  if (!value) {
-    throw new Error(`Missing required environment variable: ${name}`);
-  }
-  return value;
-}
+const resendClient = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+const fromAddress =
+  process.env.RESEND_FROM ?? process.env.RESEND_FROM_EMAIL ?? process.env.RESEND_FROM_ADDRESS ?? DEFAULT_FROM_ADDRESS;
 
 function escapeHtml(value: string): string {
   return value.replace(/[&<>"']/g, (character) => HTML_ESCAPE_LOOKUP[character] ?? character);
@@ -27,6 +39,38 @@ function formatHtml(text: string) {
     .split(/\n{2,}/)
     .map((paragraph) => `<p>${escapeHtml(paragraph).replace(/\n/g, "<br />")}</p>`)
     .join("\n");
+}
+
+function isValidEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function normalizeResendErrorMessage(message: string) {
+  const normalized = message.trim();
+
+  if (!normalized) {
+    return "We couldn't send your message. Please try again later.";
+  }
+
+  if (/domain/i.test(normalized) && /verify|authenticated?/i.test(normalized)) {
+    return "Email delivery isn't configured yet. Please verify your from domain in Resend or contact us directly.";
+  }
+
+  if (/api key/i.test(normalized)) {
+    return "Email delivery isn't configured yet. Please add your Resend API key.";
+  }
+
+  return normalized;
+}
+
+type ResendSendResult = Awaited<ReturnType<Resend["emails"]["send"]>>;
+
+function extractResendError(result: ResendSendResult | undefined, fallback?: unknown) {
+  if (result && "error" in result && result.error) {
+    return result.error;
+  }
+
+  return fallback instanceof Error ? fallback : null;
 }
 
 export async function POST(request: Request) {
@@ -49,22 +93,39 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Please complete all fields." }, { status: 400 });
     }
 
-    const apiKey = assertEnv("RESEND_API_KEY", process.env.RESEND_API_KEY);
-    const from = assertEnv("RESEND_FROM", process.env.RESEND_FROM);
+    if (!isValidEmail(trimmedEmail)) {
+      return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
+    }
+
+    if (!resendClient) {
+      return NextResponse.json(
+        {
+          error: `Email service is not configured. Please contact us directly at ${DEFAULT_CONTACT_RECIPIENT}.`,
+        },
+        { status: 503 },
+      );
+    }
+
+    if (contactRecipients.length === 0) {
+      return NextResponse.json(
+        {
+          error:
+            `Email service is configured but no recipients are set. Please contact us directly at ${DEFAULT_CONTACT_RECIPIENT} while we fix this.`,
+        },
+        { status: 503 },
+      );
+    }
 
     const safeName = escapeHtml(trimmedName);
     const safeEmail = escapeHtml(trimmedEmail);
 
-    const response = await fetch(RESEND_ENDPOINT, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from,
-        to: [CONTACT_EMAIL],
-        reply_to: trimmedEmail,
+    let sendResult: ResendSendResult | undefined;
+
+    try {
+      sendResult = await resendClient.emails.send({
+        from: fromAddress,
+        to: contactRecipients,
+        replyTo: trimmedEmail,
         subject: `New contact request from ${trimmedName}`,
         text: `Name: ${trimmedName}\nEmail: ${trimmedEmail}\n\nNotes:\n${trimmedNotes}`,
         html: `
@@ -74,18 +135,29 @@ export async function POST(request: Request) {
           <h3>Notes</h3>
           ${formatHtml(trimmedNotes)}
         `,
-      }),
-    });
+      });
+    } catch (sendError) {
+      console.error("Resend threw when sending contact email", sendError);
 
-    if (!response.ok) {
-      let errorMessage = "Unable to send your message right now. Please try again later.";
-      try {
-        const data = (await response.json()) as { message?: string; error?: string };
-        errorMessage = data.error ?? data.message ?? errorMessage;
-      } catch {
-        // Ignore JSON parse errors and use default message.
-      }
-      return NextResponse.json({ error: errorMessage }, { status: 502 });
+      const message = normalizeResendErrorMessage(
+        sendError instanceof Error ? sendError.message : String(sendError ?? ""),
+      );
+
+      return NextResponse.json({ error: message }, { status: 502 });
+    }
+
+    const resendError = extractResendError(sendResult);
+
+    if (resendError) {
+      console.error("Resend error when sending contact email", resendError);
+
+      const message = normalizeResendErrorMessage(
+        resendError && typeof resendError === "object" && "message" in resendError && resendError.message
+          ? String(resendError.message)
+          : String(resendError ?? ""),
+      );
+
+      return NextResponse.json({ error: message }, { status: 502 });
     }
 
     return NextResponse.json({ success: true });
@@ -93,8 +165,8 @@ export async function POST(request: Request) {
     console.error("Failed to send contact email", error);
 
     const message =
-      error instanceof Error && error.message.startsWith("Missing required environment variable")
-        ? "Email service is not configured."
+      error instanceof Error && error.name === "SyntaxError"
+        ? "Invalid request body."
         : "We couldn't send your message. Please try again later.";
 
     return NextResponse.json({ error: message }, { status: 500 });
