@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-const currentYear = new Date().getFullYear();
-
 const footerLinks = [
   { label: "studio.tmrw.it", href: "/studio" },
 ];
@@ -24,8 +22,7 @@ export function Footer() {
           ))}
         </nav>
         <div className="flex flex-col items-start gap-1 text-xs uppercase tracking-widest text-offwhite/50 md:items-end">
-          <span>© {currentYear} tmrw systems. All rights reserved.</span>
-          <span>Built with Next.js + ChatGPT + tmrw</span>
+          <span>© 2025 TMRW LLC. All rights reserved.</span>
         </div>
       </div>
     </footer>
