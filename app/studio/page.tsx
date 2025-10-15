@@ -42,6 +42,8 @@ export default function StudioPage() {
               </a>
               <span className="text-sm text-offwhite/60">Explore the full studio site.</span>
             </div>
+          </div>
+        </div>
       </section>
 
       <section className="section-padding" aria-labelledby="projects-heading">
