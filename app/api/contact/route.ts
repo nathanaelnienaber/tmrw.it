@@ -4,19 +4,66 @@ import { Resend } from "resend";
 const DEFAULT_CONTACT_RECIPIENT = "hello@tmrw.it";
 const DEFAULT_FROM_ADDRESS = `TMRW Studio <${DEFAULT_CONTACT_RECIPIENT}>`;
 
+const CONTACT_RECIPIENT_ENV_KEYS = [
+  "CONTACT_EMAIL_RECIPIENTS",
+  "CONTACT_RECIPIENTS",
+  "CONTACT_EMAIL",
+  "CONTACT_TO",
+];
+
+const RESEND_API_KEY_ENV_KEYS = [
+  "RESEND_API_KEY",
+  "RESEND_KEY",
+  "RESEND_TOKEN",
+  "RESEND_SECRET",
+  "NEXT_PUBLIC_RESEND_API_KEY",
+];
+
 function parseRecipientList(value: string | undefined) {
   return (value ?? "")
-    .split(",")
+    .split(/[,;\n\r]+/)
     .map((entry) => entry.trim())
     .filter((entry) => entry.length > 0);
 }
 
-const contactRecipients = parseRecipientList(
-  process.env.CONTACT_EMAIL_RECIPIENTS ??
-    process.env.CONTACT_RECIPIENTS ??
-    process.env.CONTACT_EMAIL ??
-    DEFAULT_CONTACT_RECIPIENT,
-);
+function getContactRecipients() {
+  for (const key of CONTACT_RECIPIENT_ENV_KEYS) {
+    const value = process.env[key];
+
+    if (value) {
+      const recipients = parseRecipientList(value);
+
+      if (recipients.length > 0) {
+        return recipients;
+      }
+    }
+  }
+
+  return [DEFAULT_CONTACT_RECIPIENT];
+}
+
+function getResendApiKey() {
+  for (const key of RESEND_API_KEY_ENV_KEYS) {
+    const value = process.env[key];
+
+    if (value && value.trim().length > 0) {
+      return value.trim();
+    }
+  }
+
+  return undefined;
+}
+
+function getFromAddress() {
+  const fromEnv =
+    process.env.RESEND_FROM ??
+    process.env.RESEND_FROM_EMAIL ??
+    process.env.RESEND_FROM_ADDRESS ??
+    process.env.RESEND_SENDER ??
+    process.env.CONTACT_FROM;
+
+  return fromEnv && fromEnv.trim().length > 0 ? fromEnv : DEFAULT_FROM_ADDRESS;
+}
 
 const HTML_ESCAPE_LOOKUP: Record<string, string> = {
   "&": "&amp;",
@@ -25,10 +72,6 @@ const HTML_ESCAPE_LOOKUP: Record<string, string> = {
   '"': "&quot;",
   "'": "&#39;",
 };
-
-const resendClient = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-const fromAddress =
-  process.env.RESEND_FROM ?? process.env.RESEND_FROM_EMAIL ?? process.env.RESEND_FROM_ADDRESS ?? DEFAULT_FROM_ADDRESS;
 
 function escapeHtml(value: string): string {
   return value.replace(/[&<>"']/g, (character) => HTML_ESCAPE_LOOKUP[character] ?? character);
@@ -75,6 +118,11 @@ function extractResendError(result: ResendSendResult | undefined, fallback?: unk
 
 export async function POST(request: Request) {
   try {
+    const resendApiKey = getResendApiKey();
+    const resendClient = resendApiKey ? new Resend(resendApiKey) : null;
+    const contactRecipients = getContactRecipients();
+    const fromAddress = getFromAddress();
+
     const { name, email, notes } = (await request.json()) as {
       name?: string;
       email?: string;
@@ -101,16 +149,6 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error: `Email service is not configured. Please contact us directly at ${DEFAULT_CONTACT_RECIPIENT}.`,
-        },
-        { status: 503 },
-      );
-    }
-
-    if (contactRecipients.length === 0) {
-      return NextResponse.json(
-        {
-          error:
-            `Email service is configured but no recipients are set. Please contact us directly at ${DEFAULT_CONTACT_RECIPIENT} while we fix this.`,
         },
         { status: 503 },
       );
